@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nai settings</title>
+  <link rel="icon" type="image/svg+xml" href="../icons/icon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../icons/icon-32.png">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="rail">
+    <div class="brand">
+      <span class="mark" id="mark" aria-hidden="true"><i class="eye"></i><i class="eye"></i></span>
+      <div><strong>Nai</strong><small id="version"></small></div>
+    </div>
+    <nav aria-label="Settings sections">
+      <a href="#model" data-i18n="optNavModel">Model</a>
+      <a href="#soul" data-i18n="optNavSoul">Soul and memory</a>
+      <a href="#skills" data-i18n="optNavSkills">Skills</a>
+      <a href="#voice" data-i18n="optNavVoice">Voice</a>
+      <a href="#search" data-i18n="optNavSearch">Web search</a>
+      <a href="#privacy" data-i18n="optNavPrivacy">Privacy</a>
+      <a href="#look" data-i18n="optNavLook">Appearance</a>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="content">
+      <header class="top">
+        <h1 data-i18n="optTitle">Nai settings</h1>
+        <p data-i18n="optSub">Everything is stored in this browser.</p>
+      </header>
+
+      <section id="model" aria-labelledby="h-model">
+        <h2 id="h-model" data-i18n="optNavModel">Model</h2>
+        <p class="desc" data-i18n="optModelDesc"></p>
+        <form id="modelForm" class="stack" novalidate>
+          <div class="grid2">
+            <div class="field">
+              <label for="provider" data-i18n="setProvider">Provider</label>
+              <select id="provider"></select>
+            </div>
+            <div class="field">
+              <label for="modelName" data-i18n="setModel">Model</label>
+              <input id="modelName" type="text" placeholder="gpt-4o-mini" spellcheck="false" autocomplete="off">
+            </div>
+          </div>
+          <div class="field">
+            <label for="endpoint" data-i18n="setEndpoint">Endpoint</label>
+            <input id="endpoint" type="url" placeholder="https://api.openai.com/v1/chat/completions" spellcheck="false" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="apiKey" data-i18n="setKey">API key</label>
+            <div class="with-btn">
+              <input id="apiKey" type="password" autocomplete="off" spellcheck="false">
+              <button type="button" class="btn ghost" id="toggleKey" aria-controls="apiKey"></button>
+            </div>
+            <p class="hint"><span id="keyHelp"></span> <span id="noKey" class="warn" hidden></span></p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" role="switch" id="vision"><span class="track"></span>
+            <span data-i18n="setVision">This model accepts images</span>
+          </label>
+          <div class="actions">
+            <button type="submit" class="btn primary" data-i18n="setSave">Save</button>
+            <span class="status" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      </section>
+
+      <section id="soul" aria-labelledby="h-soul">
+        <h2 id="h-soul" data-i18n="optNavSoul">Soul and memory</h2>
+        <p class="desc" data-i18n="optSoulDesc"></p>
+
+        <article class="doc" data-doc="soul">
+          <header>
+            <div><code>soul.md</code><p data-i18n="soulDesc"></p></div>
+            <div class="doc-actions">
+              <button type="button" class="btn ghost" data-act="import" data-i18n="import">Import</button>
+              <button type="button" class="btn ghost" data-act="export" data-i18n="export">Export</button>
+            </div>
+          </header>
+          <textarea rows="12" spellcheck="false" aria-label="soul.md"></textarea>
+          <footer>
+            <span class="count"></span>
+            <span class="status" role="status" aria-live="polite"></span>
+            <button type="button" class="btn primary" data-act="save" data-i18n="save">Save</button>
+          </footer>
+        </article>
+
+        <article class="doc" data-doc="memory">
+          <header>
+            <div><code>memory.md</code><p data-i18n="memDesc"></p></div>
+            <div class="doc-actions">
+              <button type="button" class="btn ghost" data-act="import" data-i18n="import">Import</button>
+              <button type="button" class="btn ghost" data-act="export" data-i18n="export">Export</button>
+            </div>
+          </header>
+          <textarea rows="12" spellcheck="false" aria-label="memory.md"></textarea>
+          <footer>
+            <span class="count"></span>
+            <span class="status" role="status" aria-live="polite"></span>
+            <button type="button" class="btn primary" data-act="save" data-i18n="save">Save</button>
+          </footer>
+        </article>
+      </section>
+
+      <section id="skills" aria-labelledby="h-skills">
+        <h2 id="h-skills" data-i18n="optNavSkills">Skills</h2>
+        <p class="desc" data-i18n="optSkillsDesc"></p>
+        <p class="hint" data-i18n="skillsHelper"></p>
+        <div id="skillList"></div>
+        <div class="actions wrap">
+          <button type="button" class="btn primary" id="skillNew" data-i18n="skillNew">New skill</button>
+          <button type="button" class="btn" id="skillImport" data-i18n="skillImport">Import</button>
+          <button type="button" class="btn ghost" id="skillRestore" data-i18n="skillRestore">Restore starter skills</button>
+          <span class="status" role="status" aria-live="polite"></span>
+        </div>
+        <form class="editor" id="skillEditor" hidden novalidate>
+          <div class="field">
+            <label for="skName" data-i18n="skillName">Name</label>
+            <input id="skName" type="text" maxlength="40" spellcheck="false" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="skDesc" data-i18n="skillDesc">Description</label>
+            <input id="skDesc" type="text" maxlength="140" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="skBody" data-i18n="skillBody">Instructions</label>
+            <textarea id="skBody" rows="10" spellcheck="false"></textarea>
+          </div>
+          <label class="switch"><input type="checkbox" role="switch" id="skAlways"><span class="track"></span><span data-i18n="skillAlways">Always on</span></label>
+          <label class="switch"><input type="checkbox" role="switch" id="skSearch"><span class="track"></span><span data-i18n="skillSearch">Search the web first</span></label>
+          <div class="actions wrap">
+            <button type="submit" class="btn primary" data-i18n="skillSave">Save</button>
+            <button type="button" class="btn" id="skCancel" data-i18n="skillCancel">Cancel</button>
+            <button type="button" class="btn ghost" id="skExport" data-i18n="skillExport">Export</button>
+            <button type="button" class="btn ghost danger" id="skDelete" data-i18n="skillDelete">Delete</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="voice" aria-labelledby="h-voice">
+        <h2 id="h-voice" data-i18n="optNavVoice">Voice</h2>
+        <p class="desc" data-i18n="optVoiceDesc"></p>
+        <form id="voiceForm" class="stack" novalidate>
+          <div class="field">
+            <label for="sttEngine" data-i18n="setSttEngine">Speech engine</label>
+            <select id="sttEngine">
+              <option value="auto"></option><option value="browser"></option><option value="recorder"></option>
+            </select>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label for="sttModel" data-i18n="setSttModel">Transcription model</label>
+              <input id="sttModel" type="text" placeholder="whisper-1" spellcheck="false" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="sttEndpoint" data-i18n="setSttEndpoint">Transcription endpoint (optional)</label>
+              <input id="sttEndpoint" type="url" placeholder="https://api.openai.com/v1/audio/transcriptions" spellcheck="false" autocomplete="off">
+            </div>
+          </div>
+          <p class="hint" data-i18n="optSttHelp"></p>
+          <div class="actions">
+            <button type="submit" class="btn primary" data-i18n="save">Save</button>
+            <span class="status" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      </section>
+
+      <section id="search" aria-labelledby="h-search">
+        <h2 id="h-search" data-i18n="optNavSearch">Web search</h2>
+        <p class="desc" data-i18n="optSearchDesc"></p>
+        <form id="searchForm" class="stack" novalidate>
+          <div class="field">
+            <label for="searchProvider" data-i18n="setSearchProvider">Provider</label>
+            <select id="searchProvider"></select>
+          </div>
+          <div class="field">
+            <label for="searchKey" data-i18n="setSearchKey">Search API key</label>
+            <div class="with-btn">
+              <input id="searchKey" type="password" autocomplete="off" spellcheck="false">
+              <button type="button" class="btn ghost" id="toggleSearchKey" aria-controls="searchKey"></button>
+            </div>
+            <p class="hint" data-i18n="searchHelper"></p>
+          </div>
+          <div class="actions">
+            <button type="submit" class="btn primary" data-i18n="searchTest">Save</button>
+            <span class="status" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      </section>
+
+      <section id="privacy" aria-labelledby="h-privacy">
+        <h2 id="h-privacy" data-i18n="optNavPrivacy">Privacy</h2>
+        <p class="desc" data-i18n="optPrivacyDesc"></p>
+        <form id="privacyForm" class="stack" novalidate>
+          <div class="grid2">
+            <div class="field">
+              <label for="historyMode" data-i18n="setHistoryMode">Chat history</label>
+              <select id="historyMode"><option value="keep"></option><option value="off"></option></select>
+            </div>
+            <div class="field">
+              <label for="historyDays" data-i18n="setHistoryDays">Delete old chats</label>
+              <select id="historyDays"><option value="0"></option><option value="7"></option><option value="30"></option><option value="90"></option></select>
+            </div>
+          </div>
+          <p class="hint" id="historyCount"></p>
+          <div class="actions wrap">
+            <button type="submit" class="btn primary" data-i18n="save">Save</button>
+            <button type="button" class="btn ghost danger" id="historyClear" data-i18n="historyClear">Delete all chat history</button>
+            <span class="status" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      </section>
+
+      <section id="look" aria-labelledby="h-look">
+        <h2 id="h-look" data-i18n="optNavLook">Appearance</h2>
+        <p class="desc" data-i18n="optLookDesc"></p>
+        <div class="stack">
+          <fieldset class="field">
+            <legend data-i18n="setTheme">Theme</legend>
+            <div class="seg" role="radiogroup">
+              <label><input type="radio" name="theme" value="system"><span data-i18n="themeSystem">System</span></label>
+              <label><input type="radio" name="theme" value="light"><span data-i18n="themeLight">Light</span></label>
+              <label><input type="radio" name="theme" value="dark"><span data-i18n="themeDark">Dark</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="field">
+            <legend data-i18n="setStyle">Style</legend>
+            <div class="seg" role="radiogroup">
+              <label><input type="radio" name="style" value="ascii"><span data-i18n="styleAscii">ASCII</span></label>
+              <label><input type="radio" name="style" value="classic"><span data-i18n="styleClassic">Classic</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="field">
+            <legend data-i18n="optLookLang">Language</legend>
+            <div class="seg" role="radiogroup">
+              <label><input type="radio" name="lang" value="en"><span>English (US)</span></label>
+              <label><input type="radio" name="lang" value="id"><span>Indonesia</span></label>
+            </div>
+          </fieldset>
+          <div class="field">
+            <label class="switch">
+              <input type="checkbox" role="switch" id="bubble"><span class="track"></span>
+              <span data-i18n="setShowBubble">Show floating bubble</span>
+            </label>
+            <p class="hint" data-i18n="optBubbleHelp"></p>
+          </div>
+          <span class="status" role="status" aria-live="polite" id="lookStatus"></span>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+<input type="file" id="docFile" accept=".md,.markdown,.txt" hidden>
+<input type="file" id="skillFile" accept=".md,.markdown,.txt" multiple hidden>
+<script src="../content/defaults.js"></script>
+<script src="options.js"></script>
+</body>
+</html>
